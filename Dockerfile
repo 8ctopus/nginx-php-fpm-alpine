@@ -4,15 +4,19 @@ FROM alpine:3.11
 EXPOSE 80/tcp
 EXPOSE 443/tcp
 
+ENV DOMAIN localhost
+ENV DOCUMENT_ROOT /public
+
 # install console tools
 RUN apk add \
     inotify-tools
 
-# install and configure zsh
+# install zsh
 RUN apk add \
     zsh \
     zsh-vcs
 
+# configure zsh
 ADD --chown=root:root include/zshrc /etc/zsh/zshrc
 
 # install php
