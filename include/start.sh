@@ -112,8 +112,8 @@ then
     echo "Expose php to host - OK"
 fi
 
-# create xdebug log file
-touch /var/log/nginx/xdebug.log
+# clean xdebug log file
+truncate -s 0 /var/log/nginx/xdebug.log
 
 # allow xdebug to write to it
 chmod 666 /var/log/nginx/xdebug.log
