@@ -67,7 +67,7 @@ then
     # set document root dir
     sed -i "s|root /var/www/site;|root /var/www/site$DOCUMENT_ROOT;|g" /etc/nginx/conf.d/default.conf
 
-    sed -i "s|server_name localhost;|server_name $DOMAIN|g" /etc/nginx/conf.d/default.conf
+    sed -i "s|server_name localhost;|server_name $DOMAIN;|g" /etc/nginx/conf.d/default.conf
 
     echo "Configure nginx for domain - OK"
 
