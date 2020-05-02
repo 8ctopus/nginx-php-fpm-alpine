@@ -13,14 +13,14 @@ then
     sleep 3
 
     # check if config backup exists
-    if [ -d /etc/nginx.bak/ ];
+    if [ ! -d /etc/nginx.bak/ ];
     then
         # create config backup
         echo "Expose nginx to host - backup container config"
         cp -r /etc/nginx/ /etc/nginx.bak/
     fi
 
-    # check if nginx config exists on host
+    # check if config exists on host
     if [ -z "$(ls -A /docker/etc/nginx/ 2> /dev/null)" ];
     then
         # config doesn't exist on host
