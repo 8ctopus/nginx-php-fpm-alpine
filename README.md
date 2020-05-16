@@ -60,7 +60,7 @@ repository in.
 
 ## build docker image
 
-    docker build -t 8ct8pus/nginx-php-fpm-alpine:latest .
+    docker build -t nginx-php-fpm-alpine:dev .
 
 ## get console to container
 
@@ -75,6 +75,6 @@ In this example, we add the php-curl extension.
     apk add php-curl
     exit
     docker-compose stop
-    docker commit dev-web user/nginx-php-fpm-alpine-curl:latest
+    docker commit dev-web nginx-php-fpm-alpine-curl:dev
 
 To use the new image, run it or update the image link in the docker-compose file.
