@@ -31,7 +31,7 @@ then
         then
             # restore config from backup
             echo "Expose nginx to host - restore config from backup"
-            rm /etc/nginx/
+            rm /etc/nginx/ 2> /dev/null
             cp -r /etc/nginx.bak/ /etc/nginx/
         fi
 
@@ -44,7 +44,7 @@ then
 
     # create symbolic link so host config is used
     echo "Expose nginx to host - create symlink"
-    rm -rf /etc/nginx/
+    rm -rf /etc/nginx/ 2> /dev/null
     ln -s /docker/etc/nginx /etc/nginx
 
     echo "Expose nginx to host - OK"
@@ -97,7 +97,7 @@ then
         then
             # restore config from backup
             echo "Expose php to host - restore config from backup"
-            rm /etc/php7/
+            rm /etc/php7/ 2> /dev/null
             cp -r /etc/php7.bak/ /etc/php7/
         fi
 
@@ -110,17 +110,17 @@ then
 
     # create symbolic link so host config is used
     echo "Expose php to host - create symlink"
-    rm -rf /etc/php7/
+    rm -rf /etc/php7/ 2> /dev/null
     ln -s /docker/etc/php7 /etc/php7
 
     echo "Expose php to host - OK"
 fi
 
 # clean xdebug log file
-truncate -s 0 /var/log/nginx/xdebug.log
+truncate -s 0 /var/log/nginx/xdebug.log 2> /dev/null
 
 # allow xdebug to write to it
-chmod 666 /var/log/nginx/xdebug.log
+chmod 666 /var/log/nginx/xdebug.log 2> /dev/null
 
 # start php-fpm
 php-fpm7
@@ -131,14 +131,13 @@ sleep 2
 # check if php-fpm is running
 if pgrep -x php-fpm7 > /dev/null
 then
-    echo "-----------------------------------------------"
     echo "Start php-fpm - OK"
 else
     echo "Start php-fpm - FAILED"
     exit
 fi
 
-echo "-----------------------------------------------"
+echo "-------------------------------------------------------"
 
 # start nginx
 nginx
@@ -154,6 +153,8 @@ else
     echo "Start container web server - FAILED"
     exit
 fi
+
+echo "-------------------------------------------------------"
 
 stop_container()
 {
