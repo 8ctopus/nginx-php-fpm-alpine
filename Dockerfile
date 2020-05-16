@@ -66,6 +66,9 @@ ADD --chown=root:root include/default.conf /etc/nginx/conf.d/default.conf
 RUN apk add \
     openssl
 
+# change php max execution time for easier debugging
+RUN sed -i 's|^max_execution_time .*$|max_execution_time 600|g' /etc/php7/php.ini
+
 RUN mkdir /etc/ssl/nginx
 
 # generate RSA private key
