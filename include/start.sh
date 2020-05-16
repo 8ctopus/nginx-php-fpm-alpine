@@ -48,29 +48,33 @@ then
     ln -s /docker/etc/nginx /etc/nginx
 
     echo "Expose nginx to host - OK"
+fi
 
-    if [ ! -e /etc/ssl/nginx/$DOMAIN.pem ];
-    then
-        echo "Generate self-signed SSL certificate for $DOMAIN..."
+if [ ! -e /etc/ssl/nginx/$DOMAIN.pem ];
+then
+    echo "Generate self-signed SSL certificate for $DOMAIN..."
 
-        # generate self-signed SSL certificate
-        openssl req -new -x509 -key /etc/ssl/nginx/server.key -out /etc/ssl/nginx/$DOMAIN.pem -days 3650 -subj /CN=$DOMAIN
+    # generate self-signed SSL certificate
+    openssl req -new -x509 -key /etc/ssl/nginx/server.key -out /etc/ssl/nginx/$DOMAIN.pem -days 3650 -subj /CN=$DOMAIN
 
-        # use SSL certificate
-        sed -i "s|ssl_certificate .*|ssl_certificate /etc/ssl/nginx/$DOMAIN.pem;|g" /etc/nginx/conf.d/default.conf
+    # use SSL certificate
+    sed -i "s|ssl_certificate .*|ssl_certificate /etc/ssl/nginx/$DOMAIN.pem;|g" /etc/nginx/conf.d/default.conf
 
-        echo "Generate self-signed SSL certificate for $DOMAIN - OK"
-    fi
+    echo "Generate self-signed SSL certificate for $DOMAIN - OK"
+fi
 
-    echo "Configure nginx for domain..."
+echo "Configure nginx for domain..."
 
-    # set document root dir
-    sed -i "s|root /var/www/site;|root /var/www/site$DOCUMENT_ROOT;|g" /etc/nginx/conf.d/default.conf
+# set document root dir
+sed -i "s|root /var/www/site;|root /var/www/site$DOCUMENT_ROOT;|g" /etc/nginx/conf.d/default.conf
 
-    sed -i "s|server_name localhost;|server_name $DOMAIN;|g" /etc/nginx/conf.d/default.conf
+sed -i "s|server_name localhost;|server_name $DOMAIN;|g" /etc/nginx/conf.d/default.conf
 
-    echo "Configure nginx for domain - OK"
+echo "Configure nginx for domain - OK"
 
+# check if we should expose php to host
+if [ -d /docker/etc/ ];
+then
     echo "Expose php to host..."
     sleep 3
 
