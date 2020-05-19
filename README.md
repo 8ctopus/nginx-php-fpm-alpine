@@ -22,12 +22,10 @@ The docker image size is 38 MB.
 
     docker-compose up
 
-    docker run -p 8000:80 8ct8pus/nginx-php-fpm-alpine:latest
-
 ## access website
 
-    http://localhost:8000/
-    https://localhost:8001/
+    http://localhost/
+    https://localhost/
 
 ## set domain name
 
@@ -78,3 +76,7 @@ In this example, we add the php-curl extension.
     docker commit dev-web nginx-php-fpm-alpine-curl:dev
 
 To use the new image, run it or update the image link in the docker-compose file.
+
+## more info on php-fpm
+
+    https://php-fpm.org/about/
