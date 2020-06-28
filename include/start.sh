@@ -50,14 +50,54 @@ then
     echo "Expose nginx to host - OK"
 fi
 
+# check for existing certificate authority
+if [ ! -e /etc/ssl/nginx/certificate_authority.pem ];
+then
+    # https://stackoverflow.com/questions/7580508/getting-chrome-to-accept-self-signed-localhost-certificate
+    echo "Generate certificate authority..."
+
+    # generate certificate authority private key
+    openssl genrsa -out /etc/ssl/nginx/certificate_authority.key 2048 2> /dev/null
+
+    # generate certificate authority certificate
+    # to read content openssl x590 -in /etc/ssl/nginx/certificate_authority.pem -noout -text
+    openssl req -new -x509 -nodes -key /etc/ssl/nginx/certificate_authority.key -sha256 -days 825 -out /etc/ssl/nginx/certificate_authority.pem -subj "/C=RU/O=8ctopus" 2> /dev/null
+
+    # copy certificate authority for docker user access
+#    cp /etc/ssl/nginx/certificate_authority.pem /var/www/site/
+
+    echo "Generate certificate authority - OK"
+fi
+
 if [ ! -e /etc/ssl/nginx/$DOMAIN.pem ];
 then
     echo "Generate self-signed SSL certificate for $DOMAIN..."
 
-    # generate self-signed SSL certificate
-    openssl req -new -x509 -key /etc/ssl/nginx/server.key -out /etc/ssl/nginx/$DOMAIN.pem -days 3650 -subj /CN=$DOMAIN
+    # generate domain private key
+    openssl genrsa -out /etc/ssl/nginx/$DOMAIN.key 2048 2> /dev/null
 
-    # use SSL certificate
+    # create certificate signing request
+    # to read content openssl x590 -in certificate_authority.pem -noout -text
+    openssl req -new -key /etc/ssl/nginx/$DOMAIN.key -out /etc/ssl/nginx/$DOMAIN.csr -subj "/C=RU/O=8ctopus/CN=$DOMAIN" 2> /dev/null
+
+    # create config file for the extensions
+    >/etc/ssl/nginx/$DOMAIN.ext cat <<-EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = $DOMAIN # Be sure to include the domain name here because Common Name is not so commonly honoured by itself
+DNS.2 = www.$DOMAIN # Optionally, add additional domains (I've added a subdomain here)
+IP.1 = 192.168.0.13 # Optionally, add an IP address (if the connection which you have planned requires it)
+EOF
+
+    # create signed certificate by certificate authority
+    openssl x509 -req -in /etc/ssl/nginx/$DOMAIN.csr -CA /etc/ssl/nginx/certificate_authority.pem -CAkey /etc/ssl/nginx/certificate_authority.key \
+        -CAcreateserial -out /etc/ssl/nginx/$DOMAIN.pem -days 825 -sha256 -extfile /etc/ssl/nginx/$DOMAIN.ext 2> /dev/null
+
+    # use certificate
+    sed -i "s|ssl_certificate_key .*|ssl_certificate_key /etc/ssl/nginx/$DOMAIN.key;|g" /etc/nginx/conf.d/default.conf
     sed -i "s|ssl_certificate .*|ssl_certificate /etc/ssl/nginx/$DOMAIN.pem;|g" /etc/nginx/conf.d/default.conf
 
     echo "Generate self-signed SSL certificate for $DOMAIN - OK"
@@ -116,7 +156,7 @@ then
     echo "Expose php to host - OK"
 fi
 
-# clean xdebug log file
+# clean log files
 truncate -s 0 /var/log/nginx/xdebug.log 2> /dev/null
 
 # allow xdebug to write to it
