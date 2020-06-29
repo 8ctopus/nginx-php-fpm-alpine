@@ -157,6 +157,8 @@ then
 fi
 
 # clean log files
+truncate -s 0 /var/log/nginx/access.log 2> /dev/null
+truncate -s 0 /var/log/nginx/error.log 2> /dev/null
 truncate -s 0 /var/log/nginx/xdebug.log 2> /dev/null
 
 # allow xdebug to write to it
