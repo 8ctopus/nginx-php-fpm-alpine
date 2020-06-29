@@ -34,27 +34,23 @@ To set the domain name to www.test.com, edit the environment variable in the doc
     environment:
       - DOMAIN=www.test.com
 
-Then edit the system host file (C:\Windows\System32\drivers\etc\hosts). Editing the file requires administrator privileges.
+Add this line to the system host file. Editing the file requires administrator privileges.
 
-    127.0.0.1 test.net
-    127.0.0.1 www.test.net
+    C:\Windows\System32\drivers\etc\hosts
 
-To access the site
-
-    http://www.test.net:8000/
-    https://www.test.net:8001/
+    127.0.0.1 test.net www.test.net
 
 ## https
 
-To remove "Your connection is not private" nag screens, import the certificate authority file ssl/certificate_authority.pem in your browser's certificates under Trusted Root Certification Authorities. (https://support.globalsign.com/digital-certificates/digital-certificate-installation/install-client-digital-certificate-windows-using-chrome)
+To remove "Your connection is not private" nag screens, import the certificate authority file under ssl/certificate_authority.pem in your browser's certificates under Trusted Root Certification Authorities. (https://support.globalsign.com/digital-certificates/digital-certificate-installation/install-client-digital-certificate-windows-using-chrome)
 
 ## Xdebug
 
 The docker image is fully configured to debug php code from the PC.
-In the Xdebug client on the computer set the variables as follows:
+In the Xdebug client on the computer configure as follows:
 
     host: 127.0.0.1
-    port: 9000
+    port: 9001
     path mapping: "/var/www/site/" : "$GIT_ROOT/dev/"
 
 For path mapping, $GIT_ROOT is the absolute path to where you cloned this
@@ -79,7 +75,7 @@ In this example, we add the php-curl extension.
     docker-compose stop
     docker commit dev-web nginx-php-fpm-alpine-curl:dev
 
-To use the new image, run it or update the image link in the docker-compose file.
+To use the new image, update the image link in the docker-compose file.
 
 ## more info on php-fpm
 
