@@ -3,7 +3,7 @@ version: '3.7'
 services:
   web:
     image: 8ct8pus/nginx-php-fpm-alpine:latest
-    container_name: dev-web
+    container_name: lep-fpm
     ports:
       - 80:80
       - 443:443

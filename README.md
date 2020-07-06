@@ -62,18 +62,17 @@ repository in.
 
 ## get console to container
 
-    docker exec -it dev-web zsh
+    docker exec -it lep-fpm zsh
 
 ## extend the docker image
 
 In this example, we add the php-curl extension.
 
-    docker-compose up --detach
-    docker exec -it dev-web zsh
+    docker exec -it lep-fpm zsh
     apk add php-curl
     exit
     docker-compose stop
-    docker commit dev-web nginx-php-fpm-alpine-curl:dev
+    docker commit lep-fpm nginx-php-fpm-alpine-curl:dev
 
 To use the new image, update the image link in the docker-compose file.
 
