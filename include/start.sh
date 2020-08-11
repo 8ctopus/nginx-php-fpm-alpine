@@ -50,6 +50,13 @@ then
     echo "Expose nginx to host - OK"
 fi
 
+# check for nginx dir in ssl
+if [ ! -d /etc/ssl/nginx/ ];
+then
+    # create dir
+    mkdir /etc/ssl/nginx/
+fi
+
 # check for existing certificate authority
 if [ ! -e /etc/ssl/nginx/certificate_authority.pem ];
 then
