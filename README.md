@@ -20,7 +20,9 @@ The docker image size is 38 MB.
 
 ## start container
 
-    docker-compose up
+```bash
+docker-compose up
+```
 
 ## access website
 
@@ -58,21 +60,27 @@ repository in.
 
 ## build docker image
 
-    docker build -t nginx-php-fpm-alpine:dev .
+```bash
+docker build -t nginx-php-fpm-alpine:dev .
+```
 
 ## get console to container
 
-    docker exec -it lep-fpm zsh
+```bash
+docker exec -it lep-fpm zsh
+```
 
 ## extend the docker image
 
 In this example, we add the php-curl extension.
 
-    docker exec -it lep-fpm zsh
-    apk add php-curl
-    exit
-    docker-compose stop
-    docker commit lep-fpm nginx-php-fpm-alpine-curl:dev
+```bash
+docker exec -it lep-fpm zsh
+apk add php-curl
+exit
+docker-compose stop
+docker commit lep-fpm nginx-php-fpm-alpine-curl:dev
+```
 
 To use the new image, update the image link in the docker-compose file.
 
