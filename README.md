@@ -2,13 +2,13 @@
 
 A super light docker web server with nginx and php-fpm on top of Alpine Linux for development purposes
 
-- nginx 1.16.1 with SSL
-- php-fpm 7.3.17
+- nginx 1.18.0 with SSL
+- php-fpm 7.3.22
 - Xdebug debugging from host
 - composer
 - zsh
 
-The docker image size is 38 MB.
+The docker image size is 43 MB.
 
 ## cool features
 
