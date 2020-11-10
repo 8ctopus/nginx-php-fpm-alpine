@@ -99,11 +99,11 @@ In this example, we add the php-curl extension.
 
 ```bash
 docker-compose up --detach
-docker exec -it lep-fpm zsh
+docker exec -it web zsh
 apk add php-curl
 exit
 docker-compose stop
-docker commit lep-fpm nginx-php-fpm-alpine-curl:dev
+docker commit web nginx-php-fpm-alpine-curl:dev
 ```
 
 To use the new image, update the image link in the docker-compose file.
