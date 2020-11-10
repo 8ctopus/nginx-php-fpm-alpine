@@ -77,8 +77,8 @@ RUN apk add \
 # change php max execution time for easier debugging
 RUN sed -i 's|^max_execution_time .*$|max_execution_time = 600|g' /etc/php7/php.ini
 
-# add site test page
-ADD --chown=root:root include/index.php /var/www/site/index.php
+# add test page to site
+ADD --chown=root:root include/index.php /var/www/html$DOCUMENT_ROOT/index.php
 
 # add entry point script
 ADD --chown=root:root include/start.sh /tmp/start.sh
@@ -87,10 +87,7 @@ ADD --chown=root:root include/start.sh /tmp/start.sh
 RUN chmod +x /tmp/start.sh
 
 # set working dir
-WORKDIR /var/www/site/
-
-# make sure directory exists otherwise server can't start
-RUN mkdir /var/www/site/$DOCUMENT_ROOT
+WORKDIR /var/www/html/
 
 # set entrypoint
 ENTRYPOINT ["/tmp/start.sh"]

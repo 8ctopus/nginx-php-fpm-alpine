@@ -53,7 +53,7 @@ In the Xdebug client on the computer configure as follows:
 
     host: 127.0.0.1
     port: 9001
-    path mapping: "/var/www/site/" : "$GIT_ROOT/html/"
+    path mapping: "/var/www/html/" : "$GIT_ROOT/html/"
 
 For path mapping, $GIT_ROOT is the absolute path to where you cloned this
 repository in.

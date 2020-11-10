@@ -12,7 +12,7 @@ services:
       - DOCUMENT_ROOT=/public
     volumes:
       # development directory
-      - ./html/:/var/www/site/
+      - ./html/:/var/www/html/
       # expose nginx logs to host
       - ./log/:/var/log/nginx/
       # expose nginx and php config to host

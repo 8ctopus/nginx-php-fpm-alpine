@@ -71,7 +71,7 @@ then
     openssl req -new -x509 -nodes -key /etc/ssl/nginx/certificate_authority.key -sha256 -days 825 -out /etc/ssl/nginx/certificate_authority.pem -subj "/C=RU/O=8ctopus" 2> /dev/null
 
     # copy certificate authority for docker user access
-#    cp /etc/ssl/nginx/certificate_authority.pem /var/www/site/
+#    cp /etc/ssl/nginx/certificate_authority.pem /var/www/html/
 
     echo "Generate certificate authority - OK"
 fi
